@@ -445,7 +445,7 @@ public class MenuProjecte1 {
 
         for (int i = 0; i < nom_proveidor.length; i++) {
             System.out.println(
-                    "El proveïdor " + nom_proveidor[i] + " ha sol·licitat " + num_productes[i] + " productes.");
+                    "Hem sol·licitat " + num_productes[i] + " producte/s al proveïdor " +  nom_proveidor[i]);
         }
 
     }
@@ -463,7 +463,7 @@ public class MenuProjecte1 {
             }
 
         }
-        System.out.println("\n" + "El proveïdor que més productes ha demanat és: " + nom_proveidor[imaxim] + " amb " + maxim + " producte/s");
+        System.out.println("\n" + "El proveïdor al que hem sol·licitat més productes és: " + nom_proveidor[imaxim] + " amb " + maxim + " producte/s");
     }
 
     static void MinProductesDemanats() {
@@ -478,7 +478,7 @@ public class MenuProjecte1 {
             }
         }
 
-        System.out.println("\n" + "El proveïdor que menys productes ha demanat és: " + nom_proveidor[iminim] + " amb " + minim + " producte/s");
+        System.out.println("\n" + "El proveïdor al que hem sol·licitat menys productes és: " + nom_proveidor[iminim] + " amb " + minim + " producte/s");
     }
 
     static void MitjanaProductesDemanats() {
