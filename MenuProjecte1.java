@@ -127,7 +127,7 @@ public class MenuProjecte1 {
         System.out.println("Introdueix l'ID del producte que vols consultar: ");
         int id = teclat.nextInt();
 
-        String consulta = "SELECT * FROM productes WHERE id = " + id;
+        String consulta = "SELECT * FROM Productes WHERE id = " + id;
 
         PreparedStatement sentencia = connexioBD.prepareStatement(consulta);
 
@@ -154,7 +154,7 @@ public class MenuProjecte1 {
         System.out.println("Introdueix el codi de la categoria: ");
         int codiCat = teclat.nextInt();
 
-        String consulta = "INSERT INTO productes (nom, estoc, imatge, codi_categoria) VALUES (?,?,?,?)";
+        String consulta = "INSERT INTO Productes (nom, estoc, imatge, codi_categoria) VALUES (?,?,?,?)";
         PreparedStatement sentencia = connexioBD.prepareStatement(consulta);
 
         sentencia.setString(1, nom);
@@ -162,7 +162,38 @@ public class MenuProjecte1 {
         sentencia.setString(3, url);
         sentencia.setInt(4, codiCat);
 
-        if (sentencia.executeUpdate() != 0) {
+        sentencia.executeUpdate();
+
+        String consulta_prod = "SELECT id FROM Productes where nom='" + nom + "'";
+        PreparedStatement sentencia2 = connexioBD.prepareStatement(consulta_prod);
+
+        ResultSet rs = sentencia2.executeQuery();
+
+        int ID = 0;
+
+        while (rs.next()) {
+            ID = rs.getInt("id");
+        }
+
+        System.out.println("Codi del Material en que està format el Producte: ");
+        System.out.println("1. Fusta ");
+        System.out.println("2. Fibra ");
+        System.out.println("3. Acer ");
+        System.out.println("4. Alumini ");
+        System.out.println("5. Vidre ");
+        System.out.println("6. Tela ");
+        System.out.println("7. Guata ");
+        System.out.println("8. Plàstic ");
+
+        int codi = teclat.nextInt();
+
+        String inserció2 = "INSERT INTO Formats (id, codi) value (?,?)";
+        PreparedStatement sentencia3 = connexioBD.prepareStatement(inserció2);
+
+        sentencia3.setInt(1, ID);
+        sentencia3.setInt(2, codi);
+
+        if (sentencia3.executeUpdate() != 0) {
             System.out.println("Producte donat d'alta: " + nom + " | " + estoc + " | " + url + " | " + codiCat);
         } else {
             System.out.println("No s'ha donat d'alta cap producte");
@@ -173,7 +204,7 @@ public class MenuProjecte1 {
         System.out.println("LLISTAT DE TOTS ELS PRODUCTES");
 
         // Creem un String, el valor serà la consulta que volem fer.
-        String consulta = "SELECT * FROM productes ORDER BY id";
+        String consulta = "SELECT * FROM Productes ORDER BY id";
 
         PreparedStatement ps = connexioBD.prepareStatement(consulta);
 
@@ -197,7 +228,7 @@ public class MenuProjecte1 {
         int id = teclat.nextInt();
         teclat.nextLine();
 
-        String productes = " SELECT * FROM productes WHERE id =" + id;
+        String productes = " SELECT * FROM Productes WHERE id =" + id;
         PreparedStatement dades = connexioBD.prepareStatement(productes);
         dades.executeQuery();
 
@@ -213,7 +244,7 @@ public class MenuProjecte1 {
             int codi_categoria;
 
             // Aquesta serà la consulta que fa per actualitzar els atributs.
-            String actualitzar = "UPDATE productes SET nom = ?, estoc= ?, imatge= ?, codi_categoria= ? where id = "
+            String actualitzar = "UPDATE Productes SET nom = ?, estoc= ?, imatge= ?, codi_categoria= ? where id = "
                     + id;
             PreparedStatement sentencia = connexioBD.prepareStatement(actualitzar);
 
@@ -280,7 +311,7 @@ public class MenuProjecte1 {
         System.out.println("Introdueix la ID del producte que vols eliminar: ");
         int id = teclat.nextInt();
 
-        String consulta = "DELETE FROM productes where id = " + id;
+        String consulta = "DELETE FROM Productes where id = " + id;
         PreparedStatement delete = connexioBD.prepareStatement(consulta);
 
         
@@ -332,7 +363,7 @@ public class MenuProjecte1 {
             int id = Integer.parseInt(linea.substring(0,posSep));
             int unitats = Integer.parseInt(linea.substring(posSep+1));
 
-            String update = "UPDATE productes SET estoc=estoc+? WHERE id=?";
+            String update = "UPDATE Productes SET estoc=estoc+? WHERE id=?";
             PreparedStatement actualitzar = connexioBD.prepareStatement(update);
             actualitzar.setInt(1, unitats);
             actualitzar.setInt(2, id);
@@ -359,7 +390,7 @@ public class MenuProjecte1 {
 
         System.out.println("Generació de comandes");
 
-        String consulta = "SELECT Pr.id, Pr.nom, Pr.estoc, P.NIF, Prov.nom, Prov.telèfon, Prov.direcció from productes Pr join proveeix P join proveïdors Prov on Pr.id = P.id and P.NIF = Prov.NIF where estoc <20 order by NIF";
+        String consulta = "SELECT Pr.id, Pr.nom, Pr.estoc, P.NIF, Prov.nom, Prov.telèfon, Prov.direcció FROM Productes Pr join proveeix P join proveïdors Prov on Pr.id = P.id and P.NIF = Prov.NIF where estoc <20 order by NIF";
 
         PreparedStatement ps = connexioBD.prepareStatement(consulta);
 
@@ -444,8 +475,7 @@ public class MenuProjecte1 {
     static void ProductesDemanats() {
 
         for (int i = 0; i < nom_proveidor.length; i++) {
-            System.out.println(
-                    "Hem sol·licitat " + num_productes[i] + " producte/s al proveïdor " +  nom_proveidor[i]);
+            System.out.println("El proveïdor " + nom_proveidor[i] + " ha sol·licitat " + num_productes[i] + " productes.");
         }
 
     }
@@ -463,7 +493,7 @@ public class MenuProjecte1 {
             }
 
         }
-        System.out.println("\n" + "El proveïdor al que hem sol·licitat més productes és: " + nom_proveidor[imaxim] + " amb " + maxim + " producte/s");
+        System.out.println("\n" + "El proveïdor que més productes ha demanat és: " + nom_proveidor[imaxim] + " amb " + maxim + " producte/s");
     }
 
     static void MinProductesDemanats() {
@@ -478,7 +508,7 @@ public class MenuProjecte1 {
             }
         }
 
-        System.out.println("\n" + "El proveïdor al que hem sol·licitat menys productes és: " + nom_proveidor[iminim] + " amb " + minim + " producte/s");
+        System.out.println("\n" + "El proveïdor que menys productes ha demanat és: " + nom_proveidor[iminim] + " amb " + minim + " producte/s");
     }
 
     static void MitjanaProductesDemanats() {
@@ -497,10 +527,10 @@ public class MenuProjecte1 {
 
     static void connexioBD() {
 
-        String servidor = "jdbc:mysql://localhost:3306/";
+        String servidor = "jdbc:mysql://192.168.1.120:3306/";
         String bbdd = "empresa";
-        String user = "root";
-        String password = "root";
+        String user = "roger";
+        String password = "roger";
 
         try { // El try intenta fer una connexió amb la base de dades.
             connexioBD = DriverManager.getConnection(servidor + bbdd, user, password);
