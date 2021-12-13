@@ -390,7 +390,7 @@ public class MenuProjecte1 {
 
         System.out.println("Generació de comandes");
 
-        String consulta = "SELECT Pr.id, Pr.nom, Pr.estoc, P.NIF, Prov.nom, Prov.telèfon, Prov.direcció FROM Productes Pr join proveeix P join proveïdors Prov on Pr.id = P.id and P.NIF = Prov.NIF where estoc <20 order by NIF";
+        String consulta = "SELECT Pr.id, Pr.nom, Pr.estoc, P.NIF, Prov.nom, Prov.telèfon, Prov.direcció FROM Productes Pr join Proveeix P join Proveïdors Prov on Pr.id = P.id and P.NIF = Prov.NIF where estoc <20 order by NIF";
 
         PreparedStatement ps = connexioBD.prepareStatement(consulta);
 
